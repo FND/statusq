@@ -1,0 +1,5 @@
+*.pyc
+/activate
+/venv
+/secret
+/.pid

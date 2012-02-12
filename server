@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+
+"""
+launch development server
+
+Usage:
+  $ ./server [development|testing|production]
+"""
+
+import sys
+import os
+
+
+NAME = "StatusQ" # XXX: duplicates statusq.NAME
+
+
+def main(args):
+    try:
+        mode = args[1]
+    except IndexError:
+        mode = "development"
+
+    key = "%s_CONFIG_MODE" % NAME.upper()
+    os.environ.setdefault(key, mode)
+
+    from statusq import app
+    print "[INFO] starting in %s mode" % mode
+    app.run()
+
+    return True
+
+
+if __name__ == "__main__":
+    status = not main(sys.argv)
+    sys.exit(status)
