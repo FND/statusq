@@ -5,11 +5,13 @@ init: env secret
 	@echo "[INFO] use \`source activate\` to activate Python environment"
 
 server: terminate
-	./server & echo $$! > .pid
+	redis-server > ./redis.log & echo $$! > .db.pid
+	./server & echo $$! > .web.pid
 
 terminate:
-	pkill -TERM -P `cat .pid` || true
-	rm .pid || true
+	pkill -TERM -P `cat .web.pid` || true
+	kill -TERM `cat .db.pid` || true
+	rm .web.pid .db.pid || true
 
 test: clean
 	py.test -s --tb=short test
