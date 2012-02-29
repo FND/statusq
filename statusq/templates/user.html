@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block body %}
+	<form action="{{ url_for("users") }}" method="post">
+		<label>
+			username
+			<input name="username">
+		</label>
+		<label>
+			password
+			<input name="password">
+		</label>
+		<input type="submit">
+	</form>
+{% endblock %}

@@ -8,7 +8,7 @@ from flask import Flask, g
 __version__ = "0.1.0"
 
 NAME = "StatusQ" # XXX: unnecessary?
-MODE = os.environ.get("%s_CONFIG_MODE" % NAME.upper(), "development").lower()
+MODE = os.environ.get("%s_CONFIG_MODE" % NAME.upper(), "development").lower() # TODO: document
 
 
 # initialize application

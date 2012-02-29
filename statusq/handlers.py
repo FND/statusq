@@ -4,14 +4,15 @@ import os
 
 from redis import StrictRedis
 
-from flask import g, request, abort, make_response, send_from_directory
+from flask import g, request, abort, make_response, send_from_directory, \
+        render_template
 from flask.views import MethodView
 
 from . import app
 
 
 @app.before_request
-def before_request():
+def before_request(): # XXX: not required for every request
     cfg = app.config["DATABASE"]
     g.db = StrictRedis(host=cfg["host"], port=cfg["port"], db=cfg["redis_db"])
 
@@ -23,6 +24,11 @@ def teardown_request(exc):
 
 @app.route("/")
 def root():
+    return render_template("user.html")
+
+
+@app.route("/api") # XXX: rename?
+def api(): # TODO: include handlers' docstrings
     links = ['<li><a href="%s">%s</a></li>' % (rule.rule, rule.rule)
             for rule in app.url_map.iter_rules() if "GET" in rule.methods]
     return "<ul>%s</ul>" % "\n".join(links)
@@ -30,7 +36,7 @@ def root():
 
 class Users(MethodView):
 
-    def post(self):
+    def post(self): # TODO: special responses for browsers
         """
         create user
 
