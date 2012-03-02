@@ -24,7 +24,7 @@ def teardown_request(exc):
 
 @app.route("/")
 def root():
-    return render_template("user.html")
+    return render_template("frontpage.html")
 
 
 @app.route("/api") # XXX: rename?
@@ -35,6 +35,9 @@ def api(): # TODO: include handlers' docstrings
 
 
 class Users(MethodView):
+
+    def get(self):
+        return render_template("user.html")
 
     def post(self): # TODO: special responses for browsers
         """
