@@ -16,7 +16,12 @@
 		</a>
 
 		<nav>
+			{% if request.authorization is none %}
+			<a href="{{ url_for("login") }}">Log in</a>
 			<a href="{{ url_for("users") }}">Sign Up</a>
+			{% else %}
+			<p>{{ request.authorization.username }}</p>
+			{% endif %}
 		</nav>
 	</header>
 
