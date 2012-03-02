@@ -5,10 +5,17 @@
 	<meta charset="utf-8">
 	<title>StatusQ</title>
 	<link rel="shortcut icon" href="{{ url_for("static", filename="favicon.ico") }}">
+	<link rel="stylesheet" href="{{ url_for("static", filename="main.css") }}">
 </head>
 
 <body>
-	<h1>StatusQ</h1>
+	<header>
+		<a href="/">
+			<h1>StatusQ</h1>
+			<p>Because We Can</p>
+		</a>
+	</header>
+
 	{% block body %}{% endblock %}
 </body>
 
