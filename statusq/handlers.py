@@ -11,8 +11,8 @@ from .auth import requires_auth, authenticate
 
 
 @app.before_request
-def before_request(): # XXX: not required for every request
-    g.db = database.connect(app)
+def before_request():
+    g.db = database.connect(app) # XXX: not required for every request
 
 
 @app.teardown_request
@@ -20,9 +20,24 @@ def teardown_request(exc):
     pass # no need to explicitly close the database connection
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def root():
-    return render_template("frontpage.html")
+    from . import messages # TODO: rename module
+
+    username = request.authorization.username if request.authorization else None
+
+    if request.method == "GET":
+        posts = messages.stream(username) if username else None
+        return render_template("frontpage.html", posts=posts)
+    elif request.method == "POST":
+        if not username:
+            abort(401)
+        msg = request.form["msg"]
+        messages.create(username, msg)
+        if not _is_browser():
+            return make_response(None, 204)
+        else:
+            return redirect(url_for("root"))
 
 
 @app.route("/api") # XXX: rename?
@@ -41,7 +56,7 @@ class Users(MethodView):
         """
         create user
 
-        responses:
+        responses (except for browsers, which are special-cased):
         204 success
         409 username already exists
         """
@@ -58,6 +73,7 @@ class Users(MethodView):
         pipe.set("users:%s" % username, password) # TODO: hash password
         pipe.sadd("users", username)
         pipe.execute() # TODO: check results
+        watch(username, username) # XXX: DEBUG?
 
         if not _is_browser():
             return make_response(None, 204)
@@ -77,6 +93,18 @@ def login():
 def favicon():
     return send_from_directory(os.path.join(app.root_path, "static"),
             "favicon.ico", mimetype="image/vnd.microsoft.icon")
+
+
+def watch(username, *overlords):
+    for overlord in overlords:
+        g.db.sadd("users:%s:overlords" % username, overlord)
+        g.db.sadd("users:%s:minions" % overlord, username)
+
+
+def unwatch(username, *overlords):
+    for overlord in overlords:
+        g.db.sadd("users:%s:overlords" % username, overlord)
+        g.db.sadd("users:%s:minions" % overlord, username)
 
 
 def _is_browser():

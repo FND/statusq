@@ -1,1 +1,18 @@
 {% extends "layout.html" %}
+
+{% block body %}
+	{% if not request.authorization is none %}
+
+	<form action="{{ url_for("root") }}" method="post">
+		<textarea name="msg"></textarea>
+		<input type="submit">
+	</form>
+
+	<ul>
+		{% for post in posts %}
+		<li>{{ post }}</li>
+		{% endfor %}
+	</ul>
+
+	{% endif %}
+{% endblock %}
