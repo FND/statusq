@@ -63,17 +63,12 @@ class Users(MethodView):
         username = request.form["username"].strip()
         password = request.form["password"].strip()
 
-        if g.db.get("users:%s" % username):
+        if g.db.get("users:%s" % username): # XXX: lacks encapsulation?
             abort(409)
         # TODO: further validate input
 
-        uid = g.db.incr("users:enum")
-        pipe = g.db.pipeline()
-        pipe.set("users:%s:uid" % username, uid) # XXX: unnecessary?
-        pipe.set("users:%s" % username, password) # TODO: hash password
-        pipe.sadd("users", username)
-        pipe.execute() # TODO: check results
-        watch(username, username) # XXX: DEBUG?
+        database.create_user(g.db, username, password)
+        database.watch(g.db, username, username) # XXX: seems weird; doesn't belong here!?
 
         if not _is_browser():
             return make_response(None, 204)
@@ -93,18 +88,6 @@ def login():
 def favicon():
     return send_from_directory(os.path.join(app.root_path, "static"),
             "favicon.ico", mimetype="image/vnd.microsoft.icon")
-
-
-def watch(username, *overlords):
-    for overlord in overlords:
-        g.db.sadd("users:%s:overlords" % username, overlord)
-        g.db.sadd("users:%s:minions" % overlord, username)
-
-
-def unwatch(username, *overlords):
-    for overlord in overlords:
-        g.db.sadd("users:%s:overlords" % username, overlord)
-        g.db.sadd("users:%s:minions" % overlord, username)
 
 
 def _is_browser():
