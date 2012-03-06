@@ -1,0 +1,8 @@
+<li>
+	<a href="/{{ post.author }}" class="author">
+		{{ post.author }}
+		<img src="{{ post.avatar }}" alt="avatar">
+	</a>
+	<time datetime="{{ post.timestamp }}">{{ post.reltime }}</time>
+	<p>{{ post.message }}</p>
+</li>

@@ -38,4 +38,9 @@ def stream(username, _type="overlords"): # TODO: rename function, `_type` argume
         msg = g.db.get("posts:%s" % pid)
         author = g.db.get("posts:%s:author" % pid)
         timestamp = float(g.db.get("posts:%s:timestamp" % pid))
-        yield "[%s] (%s) %s" % (author, pretty_date(int(timestamp)), msg)
+        yield {
+            "author": author,
+            "timestamp": timestamp, # XXX: should be ISO 8601
+            "reltime": pretty_date(int(timestamp)), # XXX: move to template?
+            "message": msg
+        }

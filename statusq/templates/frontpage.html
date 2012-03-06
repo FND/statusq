@@ -8,11 +8,11 @@
 		<input type="submit">
 	</form>
 
-	<ul>
+	<ol class="stream">
 		{% for post in posts %}
-		<li>{{ post }}</li>
+		{% include "post.html" %}
 		{% endfor %}
-	</ul>
+	</ol>
 
 	{% endif %}
 {% endblock %}

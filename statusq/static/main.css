@@ -55,3 +55,45 @@ header h1 {
 header p {
 	font-size: 0.8em;
 }
+
+/* streams */
+
+.stream {
+	float: left;
+	width: 20em;
+	margin-left: 1em;
+	margin-right: 1em;
+	list-style-type: none;
+}
+
+.stream article {
+	margin-bottom: 1em;
+}
+
+.stream time,
+.stream .author {
+	font-size: 0.9em;
+}
+
+.stream .author {
+	text-decoration: none;
+}
+
+.stream .author img {
+	display: block;
+	float: left;
+	width: 16px;
+	height: 16px;
+	overflow: hidden; /* primarily for ALT attribute */
+	margin-right: 5px;
+}
+
+.stream time {
+	display: block;
+	float: right;
+	color: #AAA;
+}
+
+.stream p {
+	margin-top: 0.2em;
+}
