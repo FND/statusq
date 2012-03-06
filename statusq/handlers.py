@@ -7,7 +7,7 @@ from flask import g, request, url_for, redirect, abort, make_response, \
 from flask.views import MethodView
 
 from . import app, database
-from .auth import requires_auth, authenticate
+from .auth import requires_auth
 
 
 @app.before_request

@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, with_statement
 
 import os
 
-from flask import Flask, g
+from flask import Flask
 
 
 __version__ = "0.1.0"

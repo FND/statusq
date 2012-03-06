@@ -2,7 +2,7 @@ from time import time
 
 from pretty import date as pretty_date
 
-from flask import g, request
+from flask import g
 
 
 def create(username, msg):
@@ -30,7 +30,7 @@ def stream(username, _type="overlords"): # TODO: rename function, `_type` argume
     elif _type == "all":
         key = "posts:%s" % username
     else:
-        raise TypeError, "invalid stream type"
+        raise TypeError("invalid stream type")
 
     posts = g.db.lrange(key, 0, 10)
 
