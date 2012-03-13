@@ -42,9 +42,6 @@ clean:
 	rm -rf htmlcov .coverage # coverage
 	rm -rf test/__pycache__ # pytest
 
-db:
-	python -c 'import app_pkg; app_pkg.create_database()'
-
 secret:
 	$$SHELL -c 'echo $$RANDOM | sha1sum > secret' # XXX: suboptimal
 
