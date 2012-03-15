@@ -48,4 +48,4 @@ secret:
 env:
 	virtualenv --no-site-packages venv
 	ln -s venv/bin/activate
-	$$SHELL -c '. venv/bin/activate; pip install -U flask redis py-pretty' # TODO: should use setup.py
+	$$SHELL -c '. venv/bin/activate; pip install -r REQUIREMENTS.txt'
